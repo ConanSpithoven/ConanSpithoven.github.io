@@ -1,6 +1,13 @@
-let model, classifier, video, label, image_input, camcontainer;
+let model, classifier, video, label, image_input, camcontainer, class_img, training_img;
+let trainButton;
+let saveButton;
+let loadButton;
 let index = 1;
 let imgisset = false;
+let path;
+let type;
+let limit;
+let isTrained = false;
 
 async function setup() {
     // setup canvas for video input
@@ -10,13 +17,15 @@ async function setup() {
     video.hide();
 
     // setup the model and classifier
-    model = await ml5.featureExtractor('MobileNet', { numLabels: 3}, modelReady);
+    model = await ml5.featureExtractor('MobileNet', { numLabels: 3 }, modelReady);
     classifier = model.classification(video, videoReady);
 
     // load in the DOM elements for later reference.
+    training_img = document.getElementById('trainme');
     camcontainer = document.getElementById('webcam-container');
     class_img = document.getElementById('classifyme');
     image_input = document.getElementById("image-input");
+    trainButton = document.getElementById("train-button");
     label = document.getElementById("resultLabel");
 
     // setup camera input button
@@ -25,10 +34,49 @@ async function setup() {
         useWebcamInput();
     });
 
+    // setup model train button
+    if (trainButton !== null) {
+        trainButton.addEventListener("click", function () {
+            classifier.train(whileTraining);
+        });
+    }
+
+    // setup model save button
+    saveButton = select("#save");
+    if (saveButton !== null) {
+        saveButton.mousePressed(function () {
+            classifier.save();
+        });
+    }
+    // setup model load button
+    loadButton = select("#load");
+    if (loadButton !== null) {
+        loadButton.changed(function () {
+            classifier.load(loadButton.elt.files, function () {
+                select("#modelStatus").html("Custom Model Loaded!");
+            });
+        });
+    }
+
     // add event listener to the display the uploaded image
     image_input.addEventListener("change", function () {
         uploadNewImage(this);
     });
+
+    // add base model set to load at start
+    // can be justified as custom code change.
+    // add user friendly styling
+    // talk bout it with ilse
+    // side bar banner
+    // cool button
+    // add cool background
+    // HOST THE THING
+
+    // add settings to the extractor to improve accuracy.
+    // apply a function for transfer training in the live version to grow the model.
+    // test mobile camera use.
+    // check with teach how to apply Kaggle.
+
 }
 
 // Train model and start classifying once trained
@@ -50,11 +98,7 @@ function gotResults(error, result) {
         label.textContent = "Unsure";
         if (result[0].confidence.toFixed(2) > 0.75) {
             label.textContent = result[0].label + ' ' + result[0].confidence.toFixed(2) * 100 + '%';
-            // added clause to inform user whether the identified trash is recycleable
-            if (result[0].label == "Can" || result[0].label == "Carton" || result[0].label == "Bottle") {
-                label.textContent += ', recycleable';
-            }
-        } 
+        }
         // classify either the uploaded image or the camera feed.
         if (index < 5) {
             if (!imgisset) {
@@ -65,6 +109,16 @@ function gotResults(error, result) {
             index++;
         }
     }
+}
+
+// add the current frame or uploaded image to the designated class for training.
+function classNewImage(type) {
+    let toClass = document.getElementById("defaultCanvas0");
+    if (imgisset) {
+        toClass = class_img;
+    }
+    classifier.addImage(toClass, type);
+    console.log("added " + toClass + " as " + type);
 }
 
 // Callback when model is loaded
@@ -83,6 +137,46 @@ function draw() {
     background(0);
     image(video, 0, 0, 320, 240);
     fill(255);
+}
+
+// load in samples from the specified folder
+function loadSamples(new_path, new_type, new_limit) {
+    index = 1;
+    type = new_type;
+    path = new_path;
+    limit = new_limit;
+    training_img.hidden = false;
+    training_img.addEventListener("load", loadNewImage());
+}
+
+// load in new sample image
+function loadNewImage() {
+    training_img.src = "images/" + path + "/" + type + " (" + index + ")" + ".jpg";
+    training_img.width = 400;
+    training_img.height = 400;
+    addNewImage();
+}
+
+// classify the sample image
+function addNewImage() {
+    classifier.addImage(document.getElementById('trainme'), type, imageAdded);
+}
+
+// on callback, rerun sample loading function
+async function imageAdded() {
+    if (index < limit) {
+        index += 1;
+        // a short delay to ensure the image is properly loaded before moving on
+        await delay(250);
+        loadNewImage();
+    } else {
+        training_img.hidden = true;
+    }
+}
+
+// wait for the specified time
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
 }
 
 // upload an image from file and display it
