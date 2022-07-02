@@ -10,7 +10,7 @@ async function setup() {
     video.hide();
 
     // setup the model and classifier
-    model = await ml5.featureExtractor('MobileNet', { numLabels: 3}, modelReady);
+    model = await ml5.featureExtractor('MobileNet', { numLabels: 3 }, modelReady);
     classifier = model.classification(video, videoReady);
 
     // load in the DOM elements for later reference.
@@ -48,7 +48,7 @@ function gotResults(error, result) {
     } else {
         // add strictness to results
         label.textContent = "Unsure";
-        if (result[0].confidence.toFixed(2) > 0.75) {
+        if (result[0].confidence.toFixed(2) > 0.70) {
             label.textContent = result[0].label + ' ' + result[0].confidence.toFixed(2) * 100 + '%';
             // added clause to inform user whether the identified trash is recycleable
             if (result[0].label == "Can" || result[0].label == "Carton" || result[0].label == "Bottle") {
@@ -69,6 +69,10 @@ function gotResults(error, result) {
 
 // Callback when model is loaded
 function modelReady() {
+    model.load("my_model/model.json", modelLoaded);
+}
+
+function modelLoaded() {
     console.log("model loaded...");
     label.textContent = 'Trashinator 3000';
 }

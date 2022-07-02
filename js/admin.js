@@ -96,7 +96,7 @@ function gotResults(error, result) {
     } else {
         // add strictness to results
         label.textContent = "Unsure";
-        if (result[0].confidence.toFixed(2) > 0.75) {
+        if (result[0].confidence.toFixed(2) > 0.70) {
             label.textContent = result[0].label + ' ' + result[0].confidence.toFixed(2) * 100 + '%';
         }
         // classify either the uploaded image or the camera feed.
