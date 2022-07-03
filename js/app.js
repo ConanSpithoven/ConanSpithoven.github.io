@@ -51,9 +51,9 @@ function gotResults(error, result) {
         if (result[0].confidence.toFixed(2) > 0.70) {
             label.textContent = result[0].label + ' ' + result[0].confidence.toFixed(2) * 100 + '%';
             // added clause to inform user whether the identified trash is recycleable
-            if (result[0].label == "Can" || result[0].label == "Carton" || result[0].label == "Bottle") {
+            //if (result[0].label == "Can" || result[0].label == "Carton" || result[0].label == "Bottle") {
                 label.textContent += ', recycleable';
-            }
+            //}
         } 
         // classify either the uploaded image or the camera feed.
         if (index < 5) {
@@ -74,7 +74,7 @@ function modelReady() {
 
 function modelLoaded() {
     console.log("model loaded...");
-    label.textContent = 'Trashinator 3000';
+    label.textContent = 'Trash Recogniser';
 }
 
 // Callback when model is loaded

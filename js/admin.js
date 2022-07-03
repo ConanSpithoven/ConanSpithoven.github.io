@@ -123,8 +123,12 @@ function classNewImage(type) {
 
 // Callback when model is loaded
 function modelReady() {
+    model.load("my_model/model.json", modelLoaded);
+}
+
+function modelLoaded() {
     console.log("model loaded...");
-    label.textContent = 'Trashinator 3000';
+    label.textContent = 'Trash Recogniser';
 }
 
 // Callback when model is loaded
