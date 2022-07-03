@@ -62,21 +62,6 @@ async function setup() {
     image_input.addEventListener("change", function () {
         uploadNewImage(this);
     });
-
-    // add base model set to load at start
-    // can be justified as custom code change.
-    // add user friendly styling
-    // talk bout it with ilse
-    // side bar banner
-    // cool button
-    // add cool background
-    // HOST THE THING
-
-    // add settings to the extractor to improve accuracy.
-    // apply a function for transfer training in the live version to grow the model.
-    // test mobile camera use.
-    // check with teach how to apply Kaggle.
-
 }
 
 // Train model and start classifying once trained
@@ -123,6 +108,10 @@ function classNewImage(type) {
 
 // Callback when model is loaded
 function modelReady() {
+    model.load("my_model/model.json", modelLoaded);
+}
+
+function modelLoaded() {
     console.log("model loaded...");
     label.textContent = 'Trashinator 3000';
 }
