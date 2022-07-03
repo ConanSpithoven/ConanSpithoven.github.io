@@ -1,5 +1,10 @@
 # PRG08-2022-Conan-Spithoven
 
+# Live Link
+https://ConanSpithoven.github.io
+# Screencast
+https://drive.google.com/file/d/1z5B1L8Qsf18crCjYWg9DGxIUFTssBfpR/view?usp=sharing
+
 ## The App
 The Trashinator is a small app which can be used to see if any trash you find on the street is actually recycleable or not.
 The main page allows for a quick, one button press identification of whatever trash you are pointing your camera at.
