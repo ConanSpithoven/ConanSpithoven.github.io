@@ -66,3 +66,8 @@ input[type="file"] {
     font-size: 18px;
     font-weight:bold;
 }
+
+.image-container {
+    width: auto;
+    max-height: 400px;
+}
