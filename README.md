@@ -6,7 +6,7 @@ https://ConanSpithoven.github.io
 https://drive.google.com/file/d/1z5B1L8Qsf18crCjYWg9DGxIUFTssBfpR/view?usp=sharing
 
 ## The App
-The Trash Recogniser is a small app which can be used to see if any trash you find on the street is actually recycleable or not.
+The Trashinator 3000 is a small app which can be used to see if any trash you find on the street is actually recycleable or not.
 The main page allows for a quick, one button press identification of whatever trash you are pointing your camera at.
 
 ## The Pages

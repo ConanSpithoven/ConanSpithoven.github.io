@@ -113,7 +113,7 @@ function modelReady() {
 
 function modelLoaded() {
     console.log("model loaded...");
-    label.textContent = 'Trash Recogniser';
+    label.textContent = 'Trashinator 3000';
 }
 
 // Callback when model is loaded
